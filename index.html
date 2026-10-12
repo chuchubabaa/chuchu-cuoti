@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff7a59">
+<meta name="description" content="初初的错题集：语文数学错题整理，拍照录入，智能间隔复习。">
+<title>初初的错题集</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="错题集">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <h1 class="app-title">🐰 初初的错题集</h1>
+    <div class="header-actions">
+      <button class="icon-btn" id="btn-stats" aria-label="学习统计">📊</button>
+      <button class="icon-btn" id="btn-settings" aria-label="设置与备份">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ============ 首页：错题本列表 ============ -->
+  <section class="screen active" id="screen-home">
+    <div class="home-actions">
+      <button class="big-btn primary" id="btn-add">📷 录入错题</button>
+      <button class="big-btn review" id="btn-review">🌟 开始复习</button>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-filter="全部">全部</button>
+      <button class="tab" data-filter="语文">语文</button>
+      <button class="tab" data-filter="数学">数学</button>
+    </div>
+
+    <div class="search-box">
+      <input type="search" id="search-input" placeholder="🔍 搜索题目关键词…">
+    </div>
+
+    <div class="list-summary" id="list-summary"></div>
+    <div class="list-container" id="list-container"></div>
+  </section>
+
+  <!-- ============ 录入错题 ============ -->
+  <section class="screen" id="screen-add">
+    <div class="screen-header">
+      <button class="back-btn" id="add-back">← 返回</button>
+      <h2 id="add-title">📷 录入错题</h2>
+      <span class="header-spacer"></span>
+    </div>
+
+    <form id="add-form" class="form" autocomplete="off">
+      <label class="form-label">科目</label>
+      <div class="subject-toggle" id="subject-toggle">
+        <button type="button" class="subject-btn active" data-subject="语文">📖 语文</button>
+        <button type="button" class="subject-btn" data-subject="数学">🧮 数学</button>
+      </div>
+
+      <label class="form-label">题型</label>
+      <div class="chip-group" id="category-group"></div>
+
+      <label class="form-label">题目照片 <span class="req">*</span></label>
+      <input type="file" id="file-image" accept="image/*" hidden>
+      <div class="photo-slot" id="photo-slot">
+        <button type="button" class="photo-btn" id="btn-photo">📷 拍照 / 从相册选</button>
+      </div>
+
+      <label class="form-label">答案照片（可选）</label>
+      <input type="file" id="file-answer-image" accept="image/*" hidden>
+      <div class="photo-slot small" id="answer-photo-slot">
+        <button type="button" class="photo-btn" id="btn-answer-photo">📷 拍答案</button>
+      </div>
+
+      <label class="form-label" for="input-title">题目简述（可选）</label>
+      <input type="text" id="input-title" placeholder="例如：进位加法 7+8">
+
+      <label class="form-label" for="input-answer">正确答案（可选）</label>
+      <textarea id="input-answer" rows="2" placeholder="填写正确答案或答题提示"></textarea>
+
+      <label class="form-label" for="input-note">知识点 / 家长备注（可选）</label>
+      <textarea id="input-note" rows="2" placeholder="例如：进位时容易忘记进 1"></textarea>
+
+      <button type="submit" class="big-btn primary full" id="btn-save">💾 保存错题</button>
+    </form>
+  </section>
+
+  <!-- ============ 题目详情 ============ -->
+  <section class="screen" id="screen-detail">
+    <div class="screen-header">
+      <button class="back-btn" id="detail-back">← 返回</button>
+      <h2>题目详情</h2>
+      <span class="header-spacer"></span>
+    </div>
+    <div id="detail-body" class="detail-body"></div>
+  </section>
+
+  <!-- ============ 强化复习 ============ -->
+  <section class="screen" id="screen-review">
+    <div class="screen-header">
+      <button class="back-btn" id="review-back">← 结束</button>
+      <h2>🌟 强化复习</h2>
+      <span class="header-spacer"></span>
+    </div>
+    <div class="review-topbar">
+      <span class="review-progress-text" id="review-progress-text"></span>
+      <div class="progress-bar"><div class="progress-fill" id="review-progress-fill"></div></div>
+    </div>
+    <div id="review-body" class="review-body"></div>
+  </section>
+
+  <!-- ============ 学习统计 ============ -->
+  <section class="screen" id="screen-stats">
+    <div class="screen-header">
+      <button class="back-btn" id="stats-back">← 返回</button>
+      <h2>📊 学习统计</h2>
+      <span class="header-spacer"></span>
+    </div>
+    <div id="stats-body" class="stats-body"></div>
+  </section>
+
+  <!-- ============ 设置与备份 ============ -->
+  <section class="screen" id="screen-settings">
+    <div class="screen-header">
+      <button class="back-btn" id="settings-back">← 返回</button>
+      <h2>⚙️ 设置与备份</h2>
+      <span class="header-spacer"></span>
+    </div>
+    <div class="settings-body">
+      <div class="settings-card">
+        <h3>💾 数据备份</h3>
+        <p class="hint">错题数据保存在<b>本机浏览器</b>中。建议定期导出备份，防止误删或更换手机时丢失。</p>
+        <button class="big-btn" id="btn-export">⬇️ 导出备份</button>
+        <button class="big-btn" id="btn-import">⬆️ 导入备份</button>
+        <input type="file" id="file-import" accept="application/json,.json" hidden>
+      </div>
+      <div class="settings-card">
+        <h3>📱 添加到主屏幕</h3>
+        <p class="hint">在手机浏览器菜单中选择「添加到主屏幕」，即可像 App 一样一键打开。添加后支持离线使用。</p>
+      </div>
+      <div class="settings-card danger">
+        <h3>⚠️ 危险操作</h3>
+        <button class="big-btn danger" id="btn-clear">🗑️ 清空所有错题</button>
+      </div>
+      <div class="settings-card">
+        <h3>ℹ️ 关于</h3>
+        <p>初初的错题集 · v1.0</p>
+        <p>语文 + 数学错题整理 · 拍照录入 · 间隔复习</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 图片放大查看 -->
+<div id="lightbox" class="lightbox hidden">
+  <img id="lightbox-img" alt="题目大图">
+  <button class="lightbox-close" id="lightbox-close" aria-label="关闭">✕</button>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/db.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

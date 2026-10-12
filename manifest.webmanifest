@@ -1,0 +1,20 @@
+{
+  "name": "初初的错题集",
+  "short_name": "错题集",
+  "description": "语文数学错题整理，拍照录入，智能间隔复习",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff7f0",
+  "theme_color": "#ff7a59",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
